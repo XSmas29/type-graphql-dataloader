@@ -1,11 +1,11 @@
 import type { TgdContext } from "#/types/TgdContext";
 import type { ApolloServerPlugin, BaseContext } from "@apollo/server";
 import { Container } from "typedi";
-import type { DataSource } from "typeorm";
+import type { Connection } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 
 interface ApolloServerLoaderPluginOption {
-  typeormGetConnection?: () => DataSource;
+  typeormGetConnection?: () => Connection;
 }
 
 const ApolloServerLoaderPlugin = (
