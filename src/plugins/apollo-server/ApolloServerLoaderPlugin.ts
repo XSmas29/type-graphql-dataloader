@@ -13,16 +13,16 @@ const ApolloServerLoaderPlugin = (
   option?: ApolloServerLoaderPluginOption
 ): ApolloServerPlugin => ({
   requestDidStart: async () => ({
-    async didResolveSource(requestContext: { context: BaseContext }) {
-      Object.assign(requestContext.context, {
+    async didResolveSource(requestContext: { contextValue: BaseContext }) {
+      Object.assign(requestContext.contextValue, {
         _tgdContext: {
           requestId: uuidv4(),
           typeormGetConnection: option?.typeormGetConnection,
         } as TgdContext,
       });
     },
-    async willSendResponse(requestContext: { context: BaseContext }) {
-      Container.reset(requestContext.context._tgdContext.requestId);
+    async willSendResponse(requestContext: { contextValue: BaseContext }) {
+      Container.reset(requestContext.contextValue._tgdContext.requestId);
     },
   }),
 });
