@@ -1,12 +1,11 @@
 import type { TgdContext } from "#/types/TgdContext";
-import type { ApolloServerPlugin } from "apollo-server-plugin-base";
-import type { BaseContext } from "apollo-server-types";
+import type { ApolloServerPlugin, BaseContext } from "@apollo/server";
 import { Container } from "typedi";
-import type { Connection } from "typeorm";
+import type { DataSource } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 
 interface ApolloServerLoaderPluginOption {
-  typeormGetConnection?: () => Connection;
+  typeormGetConnection?: () => DataSource;
 }
 
 const ApolloServerLoaderPlugin = (
@@ -21,7 +20,7 @@ const ApolloServerLoaderPlugin = (
         } as TgdContext,
       });
     },
-    async willSendResponse(requestContext: { contextValue: BaseContext }) {
+    async willSendResponse(requestContext: { contextValue: BaseContext & Record<string, any>; }) {
       Container.reset(requestContext.contextValue._tgdContext.requestId);
     },
   }),
