@@ -1,7 +1,7 @@
 import type { TgdContext } from "#/types/TgdContext";
 import DataLoader from "dataloader";
 import { UseMiddleware } from "type-graphql";
-import { MethodAndPropDecorator } from "type-graphql/dist/decorators/types";
+import { ParameterDecorator } from "type-graphql";
 import Container from "typedi";
 
 interface ResolverData {
@@ -16,11 +16,11 @@ type BatchLoadFn<K, V> = (
 export function Loader<K, V, C = K>(
   batchLoadFn: BatchLoadFn<K, V>,
   options?: DataLoader.Options<K, V, C>
-): MethodAndPropDecorator {
+): ParameterDecorator {
   return (
     target: Object,
     propertyKey: string | symbol,
-    descriptor?: TypedPropertyDescriptor<any>
+    descriptor?: number
   ) => {
     UseMiddleware(async ({ context }, next) => {
       const serviceId = `tgd#${
